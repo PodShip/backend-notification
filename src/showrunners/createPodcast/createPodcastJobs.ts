@@ -17,7 +17,7 @@ import logger from '../../loaders/logger';
 
 import { Container } from 'typedi';
 import schedule from 'node-schedule';
-import HelloWorldChannel from './helloWorldChannel';
+import createPodcastChannel from './createPodcastChannel';
 
 export default () => {
   const startTime = new Date(new Date().setHours(0, 0, 0, 0));
@@ -26,14 +26,14 @@ export default () => {
 
   fiveMinuteRule.minute = 5;
 
-  const channel = Container.get(HelloWorldChannel);
+  const channel = Container.get(createPodcastChannel);
   channel.logInfo(` 🛵 Scheduling Showrunner - ${channel.cSettings.name} Channel`);
 
   schedule.scheduleJob({ start: startTime, rule: fiveMinuteRule }, async function () {
-    const taskName = `${channel.cSettings.name} event checks and helloWorld`;
+    const taskName = `${channel.cSettings.name} event checks and createPodcast`;
 
     try {
-      await channel.helloWorld(false);
+      await channel.createPodcast(false);
 
       channel.logInfo(`🐣 Cron Task Completed -- ${taskName}`);
     } catch (err) {
